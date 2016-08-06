@@ -15,7 +15,8 @@ var CommentBox = React.createClass({
     loadData:function () {
         var self = this;
         $.get(this.props.url,{},function (json) {
-            self.setState({data: json});
+            //console.log(json.data);
+            self.setState({data: json.data});
         },'json');
     },
     handleCommentSubmit: function(comment) {
@@ -45,12 +46,11 @@ var CommentBox = React.createClass({
     render: function () {
         var commentNodes = this.props.data.map(function (item,index) {
             return (
-                <Comment key={index} author={item.author} date={item.on_time}>
-                    {item.content}
+                <Comment key={index} author={item.id} date={item.upload_time}>
+                    {item.unique_name}
                 </Comment>
             );
         });
-
         return (
             <div className="commentList">
                 {commentNodes}
@@ -100,7 +100,7 @@ var Comment = React.createClass({
 
 
 ReactDOM.render(
-    <CommentBox url="news.php?action=comment-list" suburl="news.php?action=comment"  pollTime={2000} />,
+    <CommentBox url="http://opx.web/api/pictures" suburl="news.php?action=comment"  pollTime={2000} />,
     $("#comment-box")[0]
 );
 
